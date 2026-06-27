@@ -21,6 +21,12 @@ import AgentPanel from "./AgentPanel";
 const MIN_DELAY = 120;
 const MAX_DELAY = 2600;
 
+// A genuinely real push. On bridge, the app POSTs here and anyone subscribed to
+// the topic — the ntfy phone app or the web page — gets the notification on
+// their own device, independent of this tab. No account or credentials needed.
+const NTFY_TOPIC = "ivr-nav-demo-rasheed-7f3a";
+const NTFY_URL = `https://ntfy.sh/${NTFY_TOPIC}`;
+
 const ROLE_TAG: Record<CallEvent["role"], string> = {
   ivr: "IVR",
   human: "Live rep",
@@ -94,6 +100,7 @@ export default function CallConsole() {
   const [toast, setToast] = useState<{ title: string; body: string } | null>(
     null,
   );
+  const [realPushSent, setRealPushSent] = useState(false);
 
   const scenario = useMemo(() => getScenario(selectedId), [selectedId]);
   const feedRef = useRef<HTMLDivElement>(null);
@@ -110,6 +117,8 @@ export default function CallConsole() {
   const fireNotify = useCallback(
     (title: string, body: string) => {
       setToast({ title, body });
+
+      // 1) Local browser notification — fires for anyone viewing with permission.
       if (
         typeof window !== "undefined" &&
         "Notification" in window &&
@@ -120,6 +129,24 @@ export default function CallConsole() {
         } catch {
           /* some browsers block constructed notifications — toast still shows */
         }
+      }
+
+      // 2) A genuinely real push via ntfy.sh — lands on any subscribed device
+      //    (phone app or the web page), independent of this tab. Fire-and-forget.
+      if (typeof window !== "undefined" && "fetch" in window) {
+        fetch(NTFY_URL, {
+          method: "POST",
+          headers: {
+            Title: title,
+            Tags: "rotating_light,telephone_receiver",
+            Priority: "high",
+          },
+          body,
+        })
+          .then((r) => setRealPushSent(r.ok))
+          .catch(() => {
+            /* network/extension blocked the POST — toast + browser notif still fire */
+          });
       }
     },
     [],
@@ -168,6 +195,7 @@ export default function CallConsole() {
     setResult(r);
     setPlayIndex(0);
     setToast(null);
+    setRealPushSent(false);
     setRunning(true);
   }, [scenario]);
 
@@ -178,6 +206,7 @@ export default function CallConsole() {
       setResult(null);
       setPlayIndex(0);
       setToast(null);
+      setRealPushSent(false);
     },
     [running],
   );
@@ -346,12 +375,27 @@ export default function CallConsole() {
               </li>
               <li>
                 <strong>Bridge + alert</strong> — on a confirmed human, the call
-                warm-transfers to your staff and fires a desktop notification.
+                warm-transfers to your staff and fires a{" "}
+                <strong>real push</strong> (ntfy.sh) plus a desktop notification.
               </li>
             </ul>
+            <a
+              className="push-watch"
+              href={NTFY_URL}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="push-watch-dot" />
+              <span className="push-watch-text">
+                <strong>Watch the real push land</strong>
+                <small>subscribe free → ntfy.sh/{NTFY_TOPIC}</small>
+              </span>
+              <span className="push-watch-arrow">↗</span>
+            </a>
             <p className="how-note">
-              To make it dial for real I&apos;d need a Twilio SID + auth token
-              and a number, plus a Bland AI key. Everything else is built.
+              The desktop + ntfy push are already real. To make it dial a real
+              phone I&apos;d wire Twilio (SID + token + number) and a Bland AI
+              key — the navigation and detection logic stays exactly as-is.
             </p>
           </Card>
         </aside>
@@ -363,6 +407,16 @@ export default function CallConsole() {
           <div>
             <strong>{toast.title}</strong>
             <p>{toast.body}</p>
+            <a
+              className="toast-link"
+              href={NTFY_URL}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {realPushSent
+                ? `✓ real push sent → ntfy.sh/${NTFY_TOPIC}`
+                : `ntfy.sh/${NTFY_TOPIC} ↗`}
+            </a>
           </div>
         </div>
       )}

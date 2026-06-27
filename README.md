@@ -28,12 +28,18 @@ verification question, when to bridge — is made by real, unit-tested code.
 | Live-human vs recording vs hold detection | `src/engine/detector.ts` → `detect()` | ✅ explainable feature scorer |
 | Hold-queue recovery (no premature hang-up) | `src/engine/engine.ts` | ✅ rides out multi-stage holds |
 | Answering rep questions from a case file | `src/engine/agent.ts` → `answerSlot()` | ✅ slot filling |
-| Bridge to staff + desktop notification | `CallConsole.tsx` | ✅ real `Notification` API |
+| Bridge to staff + **real push** + desktop alert | `CallConsole.tsx` | ✅ real ntfy.sh push + `Notification` API |
 | Placing the actual phone call / audio | — | ❌ simulated (see below) |
 
 The logic runs entirely client-side and is covered by **16 unit tests**
 (`npm test`) that assert the agent navigates every scenario correctly, the
 detector classifies menus/holds/humans, and a full call reaches the bridge.
+
+**The bridge push is genuinely real.** When the call connects your staff, the app
+POSTs to a free [ntfy.sh](https://ntfy.sh) topic — subscribe at
+**https://ntfy.sh/ivr-nav-demo-rasheed-7f3a** (web or the phone app) and you'll
+watch the notification land on your own device the moment the demo bridges. No
+account or credentials required.
 
 ---
 

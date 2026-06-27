@@ -1018,6 +1018,61 @@ a {
   color: var(--text);
   margin-top: 2px;
 }
+.toast-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-family: var(--mono);
+  color: var(--rep);
+  text-decoration: none;
+  border-bottom: 1px dashed color-mix(in srgb, var(--rep) 45%, transparent);
+}
+
+/* ----- real-push watch link ----- */
+.push-watch {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 11px;
+  border: 1px solid color-mix(in srgb, var(--rep) 40%, transparent);
+  background: color-mix(in srgb, var(--rep) 9%, transparent);
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.16s ease;
+}
+.push-watch:hover {
+  border-color: color-mix(in srgb, var(--rep) 70%, transparent);
+  transform: translateY(-1px);
+}
+.push-watch-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--rep);
+  box-shadow: 0 0 9px var(--rep);
+  animation: pulse 1.5s ease-in-out infinite;
+  flex: 0 0 auto;
+}
+.push-watch-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.push-watch-text strong {
+  font-size: 12.5px;
+  color: var(--rep);
+}
+.push-watch-text small {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.push-watch-arrow {
+  margin-left: auto;
+  color: var(--rep);
+}
 
 /* ----- responsive ----- */
 @media (max-width: 1080px) {
