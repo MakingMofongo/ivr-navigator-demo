@@ -194,10 +194,9 @@ export function runCall(scenario: Scenario): CallResult {
           },
           1200,
         );
-        const det = detect(turn.text);
-
         if (i === 0) {
           // The money moment: stop pressing buttons, start talking.
+          const det = detect(turn.text);
           liveRepDetected = true;
           push(
             {
@@ -231,18 +230,9 @@ export function runCall(scenario: Scenario): CallResult {
           continue;
         }
 
-        // Subsequent rep turns.
-        push(
-          {
-            role: "detector",
-            type: "detection",
-            text: `Still LIVE HUMAN · ${pct(det.confidence)} confidence`,
-            detection: det,
-            nodeId,
-          },
-          360,
-        );
-
+        // Subsequent rep turns: we've already handed off to conversation
+        // mode, so we don't re-run menu-vs-human detection on every sentence —
+        // the detector's job was the initial pickup decision. We just converse.
         if (turn.asks) {
           const ans = answerSlot(turn.text, scenario.caseContext);
           const slot = ans.slot ?? turn.asks;

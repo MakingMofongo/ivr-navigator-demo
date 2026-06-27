@@ -115,7 +115,10 @@ const SIGNALS: Signal[] = [
       /\bcan i (get|have) your\b/i,
       /\bmay i (please )?have your\b/i,
       /\bcould you (please )?(verify|confirm|provide|spell)\b/i,
-      /\bwhat[''’]?s the (member|claim|policy)\b/i,
+      /\bwhat[''’]?s the (member|claim|policy|date|dob|name|provider|callback|phone|account)\b/i,
+      /\bwhich (provider|doctor|office|clinic|date)\b/i,
+      /\b(callback|phone|account|policy|member|claim|reference) number\b/i,
+      /\b(date of birth|d\.?o\.?b)\b/i,
     ],
   },
   {

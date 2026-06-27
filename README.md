@@ -7,6 +7,12 @@ staff** — firing a desktop alert the moment a real person is on the line.
 
 > **Live demo:** https://makingmofongo.github.io/ivr-navigator-demo/
 
+![IVR Navigator running a full call](docs/demo.gif)
+
+*Full run (2× speed): dial → navigate a 4-step menu tree → ride out the hold
+queue → detect the moment a live rep picks up → answer verification questions
+from the case file → bridge to staff + desktop alert.*
+
 This repo is a working demo of the navigation + detection logic. The telephony
 layer is **simulated** (no real calls are placed), but every decision you watch —
 which key to press, whether the far end is a menu/hold/human, how to answer a
