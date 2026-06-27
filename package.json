@@ -1,0 +1,26 @@
+{
+  "name": "ivr-navigator-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI voice agent that navigates insurer IVR menus, detects live reps vs recordings, recovers from hold queues, and bridges to staff. Working logic demo with simulated telephony.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "typescript": "5.5.4",
+    "vitest": "2.0.5"
+  }
+}
